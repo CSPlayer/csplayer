@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>CSplayer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="player.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <div id="yt-player"></div>
+      <div id="player-bar">
+
+        <div class="center">
+          <button id="yt-search-button"><i class="fa fa-search big-font" aria-hidden="true"></button></i><input id="yt-search-input" type="search">
+        </div>
+
+        <div id="controls">
+            <!-- <button><i class="fa fa-fast-backward" aria-hidden="true"></i></button> -->
+            <button id="play-button" onclick="playVideo()"><i class="fa fa-play big-font" aria-hidden="true"></i></button>
+            <button id="pause-button" onclick="pauseVideo()"><i class="fa fa-pause big-font" aria-hidden="true"></i></button>
+            <!-- <button><i class="fa fa-fast-forward" aria-hidden="true"></i></button> -->
+        </div>
+
+      </div>
+    </div>
+    <script src="yt-player.js"></script>
+  </body>
+</html>
