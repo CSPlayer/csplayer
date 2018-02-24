@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <SearchBar v-on:newPlaylistItem="addItemToPlaylist" id="app-searchbar"></SearchBar>
-    <PlayerBar id="app-playerbar"></PlayerBar>
+    <search-bar v-on:newPlaylistItem="addItemToPlaylist" id="app-searchbar"></search-bar>
+    <playlist-body v-bind:room-playlist="getRoomPlaylist" id="app-playlistbody"></playlist-body>
+    <player-bar v-bind:room-playlist="getRoomPlaylist" id="app-playerbar"></player-bar>
   </div>
 </template>
 
 <script>
 import SearchBar from "./components/SearchBar"
+import PlaylistBody from "./components/PlaylistBody"
 import PlayerBar from "./components/PlayerBar"
 
 export default {
@@ -18,12 +20,17 @@ export default {
   },
   components: {
     SearchBar,
+    PlaylistBody,
     PlayerBar
   },
   methods: {
-    addItemToPlaylist: function(videoId) {
-      this.roomPlaylist.push(videoId);
-      console.log(videoId);
+    addItemToPlaylist: function(videoItem) {
+      this.roomPlaylist.push(videoItem);
+    }
+  },
+  computed: {
+    getRoomPlaylist: function() {
+      return this.roomPlaylist;
     }
   }
 }
@@ -42,6 +49,10 @@ export default {
     width: 100%;
     height: 80px;
     background-color: aliceblue;
+  }
+
+  #app-playlistbody {
+    margin-top: 100px;
   }
 
   #app-playerbar {

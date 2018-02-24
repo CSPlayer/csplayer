@@ -16,13 +16,19 @@
         player: {} // This will be set to the YT player object when mounted
       }
     },
+    props: ["roomPlaylist"],
     methods: {
       /**
-       * @summary Plays the currently loaded video
+       * @summary Plays the currently loaded video, or alerts to add a video
        * @return {void}
        */
       playVideo: function() {
-        // this.player.loadVideoById("DeHE0-8MTBA", 0, "small");
+        if (this.roomPlaylist === undefined || this.roomPlaylist.length === 0) {
+          alert("Add a song in the search bar first!");
+          return;
+        }
+
+        this.player.loadVideoById(this.roomPlaylist[0]["id"]["videoId"], 0, "small");
         this.player.playVideo();
         this.isPlaying = true;
       },
@@ -49,7 +55,7 @@
     },
     mounted () {
       /**
-       * Fires when this component is done mounting
+       * Triggers when this component is done mounting onto the DOM
        * This first block asyncronously creates and loads the YouTube player API
        * The second block set this player to be a new YT Player with certain settings
        * [YouTube Player API]{@link https://developers.google.com/youtube/iframe_api_reference}
@@ -65,7 +71,8 @@
         playerBar.player = new YT.Player("yt-player", {
           height: "0",
           width: "0",
-          videoId: "PMhWCD6u4fA",  
+          videoId: "",
+          // videoId: "PMhWCD6u4fA",  
           playerVars: {
             autoplay: "0", // Turn off autoplay
             cc_load_policy: "0", // Do not load closed captions

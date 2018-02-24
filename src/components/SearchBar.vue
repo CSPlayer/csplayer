@@ -3,9 +3,8 @@
     <button v-on:click="ytSearch(query)"><i class="fa fa-search big-fa" aria-hidden="true"></i></button><input v-model="query" v-on:keyup.enter="ytSearch(query)" type="search">
     <ul id="search-results">
       <li
-        v-for="(title, index) in videoTitles" 
-        v-on:click="addToPlaylist(index)"
-        :key="title.id">
+        v-for="(title, index) in getVideoTitles" 
+        v-on:click="addToPlaylist(index)">
         {{ title }}
       </li>
     </ul>
@@ -17,7 +16,7 @@
     name: "SearchBar",
     data () {
       return {
-        query: "",
+        query: "", 
         results: []
       }
     },
@@ -33,7 +32,7 @@
       ytSearch: function(query) {
         let searchBar = this;
         $.get(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=`,
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=AIzaSyD-pVsu7hyh4_vhSB5SearFS5BqZJr3kM0`,
           function(data) {
             data["items"].forEach(function(item) {
               searchBar.results.push(item);
@@ -42,16 +41,17 @@
         )
       },
       /**
-       * @summary Emits and passes a YT videoID to the parent
+       * @summary Emits and passes a YT video object to the parent
        * @description
-       * After clicking on one of the search items, the videoID
+       * After clicking on one of the search items, the object
        * is sent to the parent to add to the playlist
        * @param {int} index - Index from this results array
        * @return {void} 
        */
       addToPlaylist: function(index) {
-        this.$emit("newPlaylistItem", this.results[index]["id"]["videoId"]);
-
+        this.$emit("newPlaylistItem", this.results[index]);
+        this.results = [];
+        this.query = "";
       }
     },
     computed: {
@@ -63,7 +63,7 @@
        * @see addToPlaylist
        * @return {Array} An array of video titles corresponding to their videoIds
        */
-      videoTitles: function() {
+      getVideoTitles: function() {
         return this.results.map(function(entry) {
           return entry["snippet"]["title"];
         });
@@ -87,9 +87,10 @@
     list-style-type: none;
   }
 
+/* TODO: Align the search results and clean CSS */
   #search-results {
     position: relative;
-    left: 40%;
+    left: 35%; 
     text-align: left;
     font-size: 18px;
   }
