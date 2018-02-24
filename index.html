@@ -3,31 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>CSplayer</title>
+    <title>CSPlayer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="player.css">
-    <link rel="stylesheet" href="styles.css">
-    <script src="vue.js"></script>
+    <link rel="stylesheet" href="/static/global-styles.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   </head>
-
   <body>
-    <div id="app">
-      <div id="yt-player"></div>
-      <div id="player-bar">
-
-        <div class="center">
-          <button id="yt-search-button"><i class="fa fa-search big-font" aria-hidden="true"></button></i><input id="yt-search-input" type="search">
-        </div>
-
-        <div id="controls">
-            <!-- <button><i class="fa fa-fast-backward" aria-hidden="true"></i></button> -->
-            <button id="play-button" onclick="playVideo()"><i class="fa fa-play big-font" aria-hidden="true"></i></button>
-            <button id="pause-button" onclick="pauseVideo()"><i class="fa fa-pause big-font" aria-hidden="true"></i></button>
-            <!-- <button><i class="fa fa-fast-forward" aria-hidden="true"></i></button> -->
-        </div>
-
-      </div>
-    </div>
-    <script src="yt-player.js"></script>
+    <div id="app"></div>
   </body>
 </html>

@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.center{
+    margin: auto auto;
+    text-align: center;
+}
+
+.transparent-bg {
+    opacity: 0.0;
+    background-color: rgba(0, 0, 0 0.0);
+}
+
+.hide {
+    display: none;
+}
+
+.big-fa {
+    font-size: 24px;
+}
+
+.vertical-offset {
+  padding-top: 20px;
+}
