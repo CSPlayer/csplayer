@@ -2,7 +2,7 @@
   <ul>
     <li
       v-for="song in roomPlaylist">
-      {{ song["snippet"]["title"] }}
+      {{ song.snippet.title }}
     </li>
   </ul>
 </template>

@@ -2,8 +2,8 @@
   <div class="center vertical-offset">
     <hr id="progress-bar">
     <div id="yt-player"></div>
-    <button v-if="isPlaying" v-on:click="pauseVideo"><i v-if="isPlaying" class="fa fa-pause big-fa" aria-hidden="true"></i></button>
-    <button v-else v-on:click="playVideo"><i class="fa fa-play big-fa" aria-hidden="true"></i></button>
+    <button v-if="currentlyPlaying" v-on:click="pauseVideo"><i v-if="currentlyPlaying" class="fas fa-pause big-fa" aria-hidden="true"></i></button>
+    <button v-else v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
   </div>
 </template>
 
@@ -13,7 +13,9 @@
     data () {
       return {
         isPlaying: false,
-        player: {} // This will be set to the YT player object when mounted
+        player: {
+          ytPlayer: {} // This will be set to the YT player object when mounted
+        } 
       }
     },
     props: ["roomPlaylist"],
@@ -28,8 +30,8 @@
           return;
         }
 
-        this.player.loadVideoById(this.roomPlaylist[0]["id"]["videoId"], 0, "small");
-        this.player.playVideo();
+        this.player.ytPlayer.loadVideoById(this.roomPlaylist[0].id.videoId, 0, "small");
+        this.player.ytPlayer.playVideo();
         this.isPlaying = true;
       },
       /**
@@ -37,7 +39,7 @@
        * @return {void}
        */
       pauseVideo: function() {
-        this.player.pauseVideo();
+        this.player.ytPlayer.pauseVideo();
         this.isPlaying = false;
       }
     },
@@ -68,17 +70,20 @@
       var playerBar = this;
       
       window.onYouTubeIframeAPIReady = function() {
-        playerBar.player = new YT.Player("yt-player", {
+        playerBar.player.ytPlayer = new YT.Player("yt-player", {
           height: "0",
           width: "0",
           videoId: "",
-          // videoId: "PMhWCD6u4fA",  
           playerVars: {
             autoplay: "0", // Turn off autoplay
             cc_load_policy: "0", // Do not load closed captions
             disablekb: "0", // Disable the default key controls for videos
             iv_load_policy: "3", // Do not show annotations
             rel: "0" // Do not show related videos after one ends
+          },
+          events: {
+            "onReady": window.console.log("YouTube iFrame Ready")
+            // "onError": window.console.log("YouTube iFrame Error " + event.data)
           }
         });
       }
