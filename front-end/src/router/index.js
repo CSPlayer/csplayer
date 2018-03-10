@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import App from '@/App'
 import Host from '@/components/Host'
 import LandingPage from '@/components/LandingPage'
+import Guest from '@/components/Guest'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router ({
       path: '/host',
       name: 'host',
       component: Host
+    },
+    {
+      path: '/guest/:partyId/:guestId',
+      name: 'guest',
+      component: Guest
     }
   ]
 })
