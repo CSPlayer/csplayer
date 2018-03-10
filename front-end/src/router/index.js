@@ -15,7 +15,7 @@ export default new Router ({
       component: LandingPage
     },
     {
-      path: '/host',
+      path: '/host/:partyId',
       name: 'host',
       component: Host
     },
