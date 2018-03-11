@@ -3,6 +3,16 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 
+var mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost')
+var db = mongoose.connection
+db.on("error", console.error.bind(console, "connection error"))
+db.once("open", function(callback){
+  console.log("Connection Succeeded")
+});
+
+var Party = require('../models/Party')
+
 const app = express();
 app.use(morgan('combined'))
 app.use(bodyParser.json())
