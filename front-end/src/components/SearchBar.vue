@@ -6,7 +6,7 @@
       <li
         v-for="(title, index) in getVideoTitles" 
         v-on:click="addToPlaylist(index)">
-        <i class="fab fa-spotify spotify-green"></i>
+        <!-- <i class="fab fa-spotify spotify-green"></i> -->
         <i class="fab fa-youtube youtube-red"></i>
          {{ title }}
       </li>
@@ -40,6 +40,7 @@
         $.get(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=AIzaSyD-pVsu7hyh4_vhSB5SearFS5BqZJr3kM0`,
           function(data) {
+            console.log(data);
             data.items.forEach(function(item) {
               searchBar.results.push(item);
             });

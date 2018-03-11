@@ -12,11 +12,19 @@
     name: "PlaylistBody",
     data () {
       return {
+
       }
     },
-    props: ["roomPlaylist"],
-    methods: {
-
+    props: {
+      roomPlaylist: {
+        type: Array,
+        default: []
+      }
+    },
+    computed: {
+      getRoomPlaylist: function() {
+        
+      }
     }
   }
 </script>
