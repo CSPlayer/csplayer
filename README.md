@@ -2,6 +2,11 @@
 
 A web application that allows users to collaboratively create, edit, and play a playlist of songs in real time.
 
+## Prerequisites
+- [nodemon](https://github.com/remy/nodemon) (`npm install --save nodemon`)
+- [mongodb](https://docs.mongodb.com/manual/administration/install-community/)
+
+
 ## Installation
 
 This application has a back-end and a front-end component that are effectively their own applications. You will need to set-up and run both at the same time for this application to work.
@@ -19,6 +24,9 @@ For more details on how to use the front-end in a production setting please read
 ### back-end
 
 ```bash
+#run mongodb, this command may be different across OS's, this command is for iOS
+mongod
+
 cd back-end
 npm install
 npm start
