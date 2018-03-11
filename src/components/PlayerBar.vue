@@ -2,8 +2,12 @@
   <div class="center vertical-offset">
     <hr id="progress-bar">
     <div id="yt-player"></div>
-    <button v-if="currentlyPlaying" v-on:click="pauseVideo"><i v-if="currentlyPlaying" class="fas fa-pause big-fa" aria-hidden="true"></i></button>
-    <button v-else v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
+    <div v-show="currentlyPlaying">
+      <button v-on:click="pauseVideo"><i class="fas fa-pause big-fa" aria-hidden="true"></i></button>
+    </div>
+    <div v-show="!currentlyPlaying">
+      <button v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
+    </div>
   </div>
 </template>
 
@@ -30,9 +34,10 @@
           return;
         }
 
+        this.isPlaying = true;
         this.player.ytPlayer.loadVideoById(this.roomPlaylist[0].id.videoId, 0, "small");
         this.player.ytPlayer.playVideo();
-        this.isPlaying = true;
+        console.log(this.isPlaying);
       },
       /**
        * @summary Pauses the currently playing video
