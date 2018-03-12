@@ -34,7 +34,7 @@ app.post('/register_party', (req, res) => {
     }
 
     if (party.length != 0){
-      res.send({error: "A party with that name already exists!"})
+      res.status(200).send({error: "A party with that name already exists!"})
       return
     }
 
@@ -72,7 +72,7 @@ app.post('/register_guest', (req, res) => {
     }
 
     if (!party){
-      res.send({error: "Invalid partyName or partyPassword"})
+      res.status(200).send({error: "Invalid partyName or partyPassword"})
       return
     }
 
