@@ -63,7 +63,7 @@
     mounted () {
       /**
        * Triggers when this component is done mounting onto the DOM
-       * This first block asyncronously creates and loads the YouTube player API
+       * This first block asynchronously creates and loads the YouTube player API
        * The second block set this player to be a new YT Player with certain settings
        * [YouTube Player API]{@link https://developers.google.com/youtube/iframe_api_reference}
        */

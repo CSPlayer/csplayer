@@ -27,6 +27,7 @@
     },
     methods: {
       /**
+      * TODO: Move this to the backend
       * @summary Performs a video look up with the given query
       * @description
       * After clicking the button or pressing enter, this makes a GET request and
@@ -68,6 +69,7 @@
        * is sent to the parent to add to the playlist and the results
        * are cleared
        * @param {number} index - Index from this results array
+       * @emits Host#newPlaylistItem
        * @return {void} 
        */
       addToPlaylist: function(index) {
