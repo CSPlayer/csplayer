@@ -4,7 +4,7 @@
     <input v-model="query" v-on:keyup.enter="ytSearch(query)" v-on:input="debouncedSearch(query)" type="search">
     <ul id="search-results">
       <li
-        v-for="(title, index) in getVideoTitles" 
+        v-for="(title, index) in getVideoTitles"
         v-on:click="addToPlaylist(index)">
         <!-- <i class="fab fa-spotify spotify-green"></i> -->
         <i class="fab fa-youtube youtube-red"></i>
@@ -19,12 +19,14 @@
 
   export default {
     name: "SearchBar",
+
     data () {
       return {
-        query: "", 
+        query: "",
         results: []
       }
     },
+
     methods: {
       /**
       * TODO: Move this to the backend
@@ -34,7 +36,7 @@
       * repopulates the component's results array with the top five results
       * @param {string} query - Query entered by user
       * @return {void}
-      */  
+      */
       ytSearch: function(query) {
         this.results = [];
         let searchBar = this;
@@ -48,6 +50,7 @@
           }
         )
       },
+
       /**
        * @summary Performs the ytSearch when the user has stopped typing
        * @description
@@ -59,9 +62,10 @@
        * @param {number} - Time in miliseconds to wait for
        * @return {function} - The new debounced function
        */
-      debouncedSearch: _.debounce(function (e) {
+      debouncedSearch: _.debounce(function() {
         this.ytSearch(this.query);
       }, 500),
+
       /**
        * @summary Emits and passes a YT video object to the parent
        * @description
@@ -70,12 +74,13 @@
        * are cleared
        * @param {number} index - Index from this results array
        * @emits Host#newPlaylistItem
-       * @return {void} 
+       * @return {void}
        */
       addToPlaylist: function(index) {
         this.$emit("newPlaylistItem", this.results[index]);
         this.clearInputField();
       },
+
       /**
        * @summary Resets the input field and gets rid of search results
        * @return {void}
@@ -85,6 +90,7 @@
         this.query = "";
       }
     },
+
     computed: {
       /**
        * @summary Computes the list of video titles
@@ -127,7 +133,7 @@
 /* TODO: Align the search results and clean CSS */
   #search-results {
     position: absolute;
-    left: 35%; 
+    left: 35%;
     text-align: left;
     font-size: 18px;
   }
