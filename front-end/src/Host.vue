@@ -1,0 +1,129 @@
+<template>
+  <div id="app">
+    <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
+
+    <ul id="app-playlistbody">
+      <li v-for="item in getRoomPlaylist">
+        <playlist-item v-bind:track="item"
+                       v-on:vote="castVote"
+                       :key="item.id.id">
+
+        </playlist-item>
+      </li>
+    </ul>
+
+    <player-bar id="app-playerbar" v-bind:room-playlist="getRoomPlaylist"></player-bar>
+  </div>
+</template>
+
+<script>
+import SearchBar from "./components/SearchBar"
+import PlaylistItem from "./components/PlaylistItem"
+import PlayerBar from "./components/PlayerBar"
+
+import io from "socket.io-client"
+
+const backendURL = "http://localhost:8081";
+
+export default {
+  name: "Host",
+
+  data () {
+    return {
+      roomPlaylist: [],
+      socket: {}
+    }
+  },
+
+  components: {
+    SearchBar,
+    PlaylistItem,
+    PlayerBar
+  },
+
+  methods: {
+    /**
+     * @summary Pushes a track to this roomPlaylist
+     * @description
+     * Listens for users clicking on search results and wraps the video
+     * into a track object with a timestamp and rating before adding
+     * to this roomPlaylist
+     * @param {object} videoItem - YouTube video object
+     * @listens SearchBar#addToPlaylist
+     * @emits Server#clientAddedItemToPlaylist
+     * @return {void}
+     */
+    addItemToPlaylist: function(videoItem) {
+      let track = {
+        videoItem: videoItem,
+        rating: 0,
+        id: new Date().getTime()
+      };
+
+      this.socket.emit("clientAddedItemToPlaylist", track);
+    },
+
+    /**
+     * @summary Emits a vote to the server to update the track rating
+     * @param {object} track - This application's track item
+     * @param {number} vote - Either a 1 or -1 indicating up or down vote
+     * @emits Server#clientCastedVote
+     * @return {void}
+     */
+    castVote: function(track, vote) {
+      this.socket.emit("clientCastedVote", track, vote);
+    }
+  },
+
+  computed: {
+    getRoomPlaylist: function() {
+      return this.roomPlaylist;
+    }
+  },
+
+  /**
+   * @summary Initializes the socket and sets up the listeners
+   * @return {void}
+   */
+  created: function() {
+    this.socket = io(backendURL);
+    let host = this;
+    this.socket.on("serverUpdatedPlaylist", function(data) {
+      console.log("Received new playlist");
+      host.roomPlaylist = data;
+    });
+  }
+}
+</script>
+
+<style scoped>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: skyblue;
+  }
+
+  #app-searchbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background-color: aliceblue;
+  }
+
+  #app-playlistbody {
+    margin-top: 100px;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  #app-playerbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+  }
+</style>

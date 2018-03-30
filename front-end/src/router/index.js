@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import App from '@/App'
-import Host from '@/components/Host'
-import LandingPage from '@/components/LandingPage'
-import Guest from '@/components/Guest'
+import Host from '@/Host'
+import Guest from '@/Guest'
+import LandingPage from '@/LandingPage'
 
 Vue.use(Router)
 

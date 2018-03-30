@@ -2,18 +2,21 @@
   <div class="center vertical-offset">
     <hr id="progress-bar">
     <div id="yt-player"></div>
+
     <div v-show="currentlyPlaying">
       <button v-on:click="pauseVideo"><i class="fas fa-pause big-fa" aria-hidden="true"></i></button>
     </div>
     <div v-show="!currentlyPlaying">
       <button v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
     </div>
+
   </div>
 </template>
 
 <script>
   export default {
     name: "PlayerBar",
+
     data () {
       return {
         isPlaying: false,
@@ -22,12 +25,15 @@
         } 
       }
     },
+
     props: ["roomPlaylist"],
+    
     methods: {
       /**
        * @summary Plays the currently loaded video, or alerts to add a video
        * @return {void}
        */
+      // TODO: Put loadVideoById elsewhere so hitting the play button doesn't restart song
       playVideo: function() {
         if (this.roomPlaylist === undefined || this.roomPlaylist.length === 0) {
           alert("Add a song in the search bar first!");
@@ -35,10 +41,10 @@
         }
 
         this.isPlaying = true;
-        this.player.ytPlayer.loadVideoById(this.roomPlaylist[0].id.videoId, 0, "small");
+        this.player.ytPlayer.loadVideoById(this.roomPlaylist[0].videoItem.id.videoId, 0, "small");
         this.player.ytPlayer.playVideo();
-        console.log(this.isPlaying);
       },
+
       /**
        * @summary Pauses the currently playing video
        * @return {void}
@@ -48,6 +54,7 @@
         this.isPlaying = false;
       }
     },
+
     computed: {
       /**
        * @summary Tells whether the player is currently playing a song
@@ -60,10 +67,11 @@
         return this.isPlaying;
       }
     },
+
     mounted () {
       /**
        * Triggers when this component is done mounting onto the DOM
-       * This first block asyncronously creates and loads the YouTube player API
+       * This first block asynchronously creates and loads the YouTube player API
        * The second block set this player to be a new YT Player with certain settings
        * [YouTube Player API]{@link https://developers.google.com/youtube/iframe_api_reference}
        */

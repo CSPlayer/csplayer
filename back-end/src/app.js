@@ -1,41 +1,46 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const morgan = require('morgan')
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const morgan = require('morgan');
 
-var mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost')
-var db = mongoose.connection
-db.on("error", console.error.bind(console, "connection error"))
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost');
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(callback){
-  console.log("Connection Succeeded")
+  console.log("Connection Succeeded");
 });
 
-var Party = require('../models/Party')
+var Party = require('../models/Party');
 
 const app = express();
-app.use(morgan('combined'))
-app.use(bodyParser.json())
-app.use(cors())
+
+const server = app.listen(process.env.PORT || 8081);
+const io = require('socket.io').listen(server);
+
+
+// app.use(morgan('combined'))
+app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/register_party', (req, res) => {
-  var name = req.body.partyName
-  var password = req.body.partyPassword
+  var name = req.body.partyName;
+  var password = req.body.partyPassword;
 
   if(!name || !password) {
-    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"})
-    return
+    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"});
+    return;
   }
 
   var result = Party.find({partyName: name}).exec((err, party) => {
     if (err) {
-      res.status(500).send({error: "Encountered database error while checking if party exists"})
-      return
+      res.status(500).send({error: "Encountered database error while checking if party exists"});
+      return;
     }
 
     if (party.length != 0){
-      res.status(200).send({error: "A party with that name already exists!"})
-      return
+      res.status(200).send({error: "A party with that name already exists!"});
+      return;
     }
 
     var newParty = new Party({
@@ -46,46 +51,85 @@ app.post('/register_party', (req, res) => {
 
     newParty.save((err, newParty) => {
       if (err) {
-        res.status(500).send({error: "Encountered database error while checking if party exists"})
-        return
+        res.status(500).send({error: "Encountered database error while checking if party exists"});
+        return;
       }
 
-      res.status(200).send({partyName: name})
+      res.status(200).send({partyName: name});
     })
 
   })
 })
 
 app.post('/register_guest', (req, res) => {
-  var name = req.body.partyName
-  var password = req.body.partyPassword
+  var name = req.body.partyName;
+  var password = req.body.partyPassword;
 
   if(!name || !password) {
-    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"})
-    return
+    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"});
+    return;
   }
 
   var result = Party.findOne({partyName: name, partyPassword: password}).exec((err, party) => {
     if (err) {
-      res.status(500).send({error: "Encountered database error while checking if party exists"})
-      return
+      res.status(500).send({error: "Encountered database error while checking if party exists"});
+      return;
     }
 
     if (!party){
-      res.status(200).send({error: "Invalid partyName or partyPassword"})
-      return
+      res.status(200).send({error: "Invalid partyName or partyPassword"});
+      return;
     }
 
     party.guests.push([])
     party.save((err, result) => {
       if (err) {
-        res.status(500).send({error: "Encountered database while adding guest"})
-        return
+        res.status(500).send({error: "Encountered database while adding guest"});
+        return;
       }
 
-      res.status(200).send({PartName: name, guestID: result.guests.length - 1})
+      res.status(200).send({PartName: name, guestID: result.guests.length - 1});
     })
   })
 })
 
-app.listen(process.env.PORT || 8081)
+
+// TODO: Clean this up
+let masterPlaylist = [];
+
+io.on("connection", function(socket) {
+
+  console.log("Connected");
+  masterPlaylist = [];
+
+  socket.on("created", function(room) {
+    console.log(room + " created");
+  });
+
+  socket.on("clientAddedItemToPlaylist", function(track) {
+    masterPlaylist.push(track);
+    console.log(track.id);
+    socket.emit("serverUpdatedPlaylist", masterPlaylist);
+  });
+
+  socket.on("clientCastedVote", function(track, vote) {
+    let specificTrack = getTrackObject(track.id);
+
+    if (specificTrack !== null) {
+      specificTrack.rating += vote;
+      socket.emit("serverUpdatedPlaylist", masterPlaylist);
+    }
+
+  })
+});
+
+
+function getTrackObject(id) {
+  for (let track of masterPlaylist) {
+    if (track.id === id) {
+      return track;
+    }
+  }
+
+  return null;
+}
