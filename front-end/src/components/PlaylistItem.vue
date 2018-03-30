@@ -1,44 +1,45 @@
 <template>
   <div>
-    <h3 id="title">{{song.snippet.title}}</h3>
+    <h3 id="title">{{track.videoItem.snippet.title}}</h3>
+
     <div id="vote-buttons" class="big-fa">
-        <i class="far fa-arrow-alt-circle-up"></i><i class="far fa-arrow-alt-circle-down"></i>
+      <button v-on:click="upvote"><i class="far fa-arrow-alt-circle-up"></i></button>
+      <button v-on:click="downvote"><i class="far fa-arrow-alt-circle-down" ></i></button>
     </div>
+
+    <h3 id="rating">{{track.rating}}</h3>
+
   </div>
 </template>
 
 <script>
   export default {
     name: "PlaylistItem",
-    data () {
-      return {
 
-      }
-    },
     props: {
-      song: {
-        type: Object,
-        default: {}
+      track: {
+        type: Object
       }
     },
+
     methods: {
       upvote: function() {
-        this.$emit("vote", this.song, 1);
+        this.$emit("vote", this.track, 1);
       },
       downvote: function() {
-        this.$emit("vote", this.song, -1);
+        this.$emit("vote", this.track, -1);
       }
     }
   }
 </script>
 
 <style scoped>
-  #title {
-    float: left;
+  * {
+    display: inline-block;
   }
 
-  #vote-buttons {
-    float: right;
+  #rating {
+    color: blue;
   }
 
 </style>
