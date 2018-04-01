@@ -7,7 +7,6 @@
         <playlist-item v-bind:track="item"
                        v-on:vote="castVote"
                        :key="item.id.id">
-
         </playlist-item>
       </li>
     </ul>
@@ -87,10 +86,21 @@ export default {
    */
   created: function() {
     this.socket = io(backendURL);
+    
     let host = this;
+
+    this.socket.on("connect", function() {
+      let partyId = host.$route.params.partyId;
+      host.socket.emit("room", partyId);
+    });
+    
     this.socket.on("serverUpdatedPlaylist", function(data) {
       console.log("Received new playlist");
       host.roomPlaylist = data;
+    });
+
+    this.socket.on("message", function(msg) {
+      console.log(msg);
     });
   }
 }

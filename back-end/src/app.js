@@ -24,5 +24,5 @@ app.post('/register_guest', (req, res) => {
 
 io.on("connection", function(socket) {
   console.log("Connected");
-  socketEventHandler.handle(socket);
+  socketEventHandler.handle(socket, io);
 });
