@@ -1,19 +1,12 @@
-"use strict";
-
 const db = require("./fakedb");
-
-let currentRooms = new Map();
-let masterPlaylist = [];
 
 function handle(socket) {
 
-  let socketPartyId;
+  let masterPlaylist = [];
 
   socket.on("room", function(partyId) {
-    socketPartyId = partyId;
-    socket.join(socketPartyId);
+    socket.join(partyId);
     console.log("Joined " + partyId);
-    socket.emit("message", "room stuff " + socketPartyId);
   });
   
   socket.on("clientAddedItemToPlaylist", function(track) {
@@ -29,6 +22,14 @@ function handle(socket) {
       socket.emit("serverUpdatedPlaylist", masterPlaylist);
     }
   });
+
+  socket.on("clientSongHasEnded", function() {
+    if (masterPlaylist.length > 0) {
+      masterPlaylist.shift();
+    }
+    
+    socket.emit("serverUpdatedPlaylist", masterPlaylist);
+  })
 }
 
 function getTrackObject(id) {

@@ -11,7 +11,7 @@
       </li>
     </ul>
 
-    <player-bar id="app-playerbar" v-bind:room-playlist="getRoomPlaylist"></player-bar>
+    <player-bar id="app-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
   </div>
 </template>
 
@@ -50,7 +50,6 @@ export default {
      * @param {object} videoItem - YouTube video object
      * @listens SearchBar#addToPlaylist
      * @emits Server#clientAddedItemToPlaylist
-     * @return {void}
      */
     addItemToPlaylist: function(videoItem) {
       let track = {
@@ -66,23 +65,35 @@ export default {
      * @summary Emits a vote to the server to update the track rating
      * @param {object} track - This application's track item
      * @param {number} vote - Either a 1 or -1 indicating up or down vote
+     * @listens PlaylistItem#vote
      * @emits Server#clientCastedVote
-     * @return {void}
      */
     castVote: function(track, vote) {
       this.socket.emit("clientCastedVote", track, vote);
+    },
+
+    /**
+     * @summary Updates the playlist to move to the next song
+     * @listens Playerbar#songEnded
+     * @emits Server#clientSongHasEnded
+     */ 
+    cueNextTrack: function() {
+      this.socket.emit("clientSongHasEnded");
     }
   },
 
   computed: {
     getRoomPlaylist: function() {
       return this.roomPlaylist;
+    },
+
+    getCurrentTrack: function() {
+      return this.roomPlaylist[0];
     }
   },
 
   /**
    * @summary Initializes the socket and sets up the listeners
-   * @return {void}
    */
   created: function() {
     this.socket = io(backendURL);
@@ -94,13 +105,9 @@ export default {
       host.socket.emit("room", partyId);
     });
     
-    this.socket.on("serverUpdatedPlaylist", function(data) {
+    this.socket.on("serverUpdatedPlaylist", function(updatedPlaylist) {
       console.log("Received new playlist");
-      host.roomPlaylist = data;
-    });
-
-    this.socket.on("message", function(msg) {
-      console.log(msg);
+      host.roomPlaylist = updatedPlaylist;
     });
   }
 }
