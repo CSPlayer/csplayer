@@ -19,7 +19,6 @@
 
     data () {
       return {
-        isFirstSong: true,
         isPlaying: false,
         player: {
           ytPlayer: {} // This will be set to the YT player object when mounted
@@ -62,10 +61,16 @@
 
     watch: {
       track: function(currentTrack, oldTrack) {
+        // If currentTrack is undefined then we've reached the end of our playlist
         if (currentTrack !== undefined) {
+          // If oldTrack is undefined, then this is the first track to be added and we should
+          // only play when the user wants to start
           if (oldTrack === undefined) {
           this.player.ytPlayer.cueVideoById(currentTrack.videoItem.id.videoId, 0, "small");
           }
+          // Normally the computed method of Host#getCurrentTrack would only update the track when
+          // it has finished or skipped, but because the server sends a new array of songs the computed
+          // method believes those tracks are new
           else if (oldTrack.id !== currentTrack.id) {
             this.player.ytPlayer.loadVideoById(currentTrack.videoItem.id.videoId, 0, "small");
           }
