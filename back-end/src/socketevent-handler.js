@@ -15,7 +15,7 @@ function handle(socket) {
   });
   
   socket.on("clientCastedVote", function(track, vote) {
-    let specificTrack = getTrackObject(track.id);
+    let specificTrack = getTrackObject(track.id, masterPlaylist);
   
     if (specificTrack !== null) {
       specificTrack.rating += vote;
@@ -32,7 +32,7 @@ function handle(socket) {
   })
 }
 
-function getTrackObject(id) {
+function getTrackObject(id, masterPlaylist) {
   for (let track of masterPlaylist) {
     if (track.id === id) {
       return track;
