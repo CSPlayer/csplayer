@@ -35,7 +35,6 @@
       * After clicking the button or pressing enter, this makes a GET request and
       * repopulates the component's results array with the top five results
       * @param {string} query - Query entered by user
-      * @return {void}
       */
       ytSearch: function(query) {
         this.results = [];
@@ -74,7 +73,6 @@
        * are cleared
        * @param {number} index - Index from this results array
        * @emits Host#newPlaylistItem
-       * @return {void}
        */
       addToPlaylist: function(index) {
         this.$emit("newPlaylistItem", this.results[index]);
@@ -83,7 +81,6 @@
 
       /**
        * @summary Resets the input field and gets rid of search results
-       * @return {void}
        */
       clearInputField: function() {
         this.results = [];

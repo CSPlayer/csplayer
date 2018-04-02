@@ -3,10 +3,10 @@
     <hr id="progress-bar">
     <div id="yt-player"></div>
 
-    <div v-show="currentlyPlaying">
+    <div v-show="isCurrentlyPlaying">
       <button v-on:click="pauseVideo"><i class="fas fa-pause big-fa" aria-hidden="true"></i></button>
     </div>
-    <div v-show="!currentlyPlaying">
+    <div v-show="!isCurrentlyPlaying">
       <button v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
     </div>
 
@@ -26,29 +26,23 @@
       }
     },
 
-    props: ["roomPlaylist"],
+    props: {
+      track: {
+        type: Object
+      }
+    },
     
     methods: {
-      /**
-       * @summary Plays the currently loaded video, or alerts to add a video
-       * @return {void}
-       */
-      // TODO: Put loadVideoById elsewhere so hitting the play button doesn't restart song
       playVideo: function() {
-        if (this.roomPlaylist === undefined || this.roomPlaylist.length === 0) {
+        if (this.track === null || this.track === undefined) {
           alert("Add a song in the search bar first!");
           return;
         }
 
-        this.isPlaying = true;
-        this.player.ytPlayer.loadVideoById(this.roomPlaylist[0].videoItem.id.videoId, 0, "small");
         this.player.ytPlayer.playVideo();
+        this.isPlaying = true;
       },
 
-      /**
-       * @summary Pauses the currently playing video
-       * @return {void}
-       */
       pauseVideo: function() {
         this.player.ytPlayer.pauseVideo();
         this.isPlaying = false;
@@ -56,15 +50,31 @@
     },
 
     computed: {
-      /**
-       * @summary Tells whether the player is currently playing a song
-       * @description
-       * Gets this isPlaying value and also updates the
-       * play/pause button on the screen
-       * @return {boolean} Is this player currently playing
-       */
-      currentlyPlaying: function() {
+      isCurrentlyPlaying: function() {
         return this.isPlaying;
+      },
+
+      getCurrentTrack: function() {
+        return this.track;
+      }
+    },
+
+    watch: {
+      track: function(currentTrack, oldTrack) {
+        // If currentTrack is undefined then we've reached the end of our playlist
+        if (currentTrack !== undefined) {
+          // If oldTrack is undefined, then this is the first track to be added and we should
+          // only play when the user wants to start
+          if (oldTrack === undefined) {
+          this.player.ytPlayer.cueVideoById(currentTrack.videoItem.id.videoId, 0, "small");
+          }
+          // Normally the computed method of Host#getCurrentTrack would only update the track when
+          // it has finished or skipped, but because the server sends a new array of songs the computed
+          // method believes those tracks are new
+          else if (oldTrack.id !== currentTrack.id) {
+            this.player.ytPlayer.loadVideoById(currentTrack.videoItem.id.videoId, 0, "small");
+          }
+        }
       }
     },
 
@@ -95,8 +105,15 @@
             rel: "0" // Do not show related videos after one ends
           },
           events: {
-            "onReady": window.console.log("YouTube iFrame Ready")
-            // "onError": window.console.log("YouTube iFrame Error " + event.data)
+            "onReady": window.console.log("YouTube iFrame Ready"),
+            "onError": function(event) {
+              console.log("YouTube iFrame Error " + event.data);
+            },
+            "onStateChange": function(event) {
+              if (event.data === YT.PlayerState.ENDED) {
+                playerBar.$emit("songEnd");
+              }
+            }
           }
         });
       }
