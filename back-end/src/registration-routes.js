@@ -18,8 +18,8 @@ const init = (app) => {
    * @emits JSON
    */
   app.post('/register_party', (req, res) => {
-    var name = req.body.partyName;
-    var password = req.body.partyPassword;
+    const name = req.body.partyName;
+    const password = req.body.partyPassword;
 
     //check if both name and password fields are not empty
     if(!name || !password) {
@@ -28,7 +28,7 @@ const init = (app) => {
     }
 
     //look up provided party name
-    var result = Party.find({partyName: name}).exec((err, party) => {
+    const result = Party.find({partyName: name}).exec((err, party) => {
       if (err) {
         res.status(200).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
         return;
@@ -86,7 +86,7 @@ const init = (app) => {
     }
 
     //validate that there is a party with that name and password
-    var result = Party.findOne({partyName: name, partyPassword: password}).exec((err, party) => {
+    const result = Party.findOne({partyName: name, partyPassword: password}).exec((err, party) => {
       if (err) {
         res.status(200).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
         return;
