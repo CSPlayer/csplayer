@@ -1,5 +1,5 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var partySchema = new Schema({
   partyName : {type: String, required: true},
