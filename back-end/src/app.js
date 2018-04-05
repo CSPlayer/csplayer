@@ -47,20 +47,20 @@ app.post('/register_party', (req, res) => {
 
   //check if both name and password fields are not empty
   if(!name || !password) {
-    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"});
+    res.status(400).send({error : "Must provide a partyName and partyPassword."});
     return;
   }
 
   //look up provided party name
   var result = Party.find({partyName: name}).exec((err, party) => {
     if (err) {
-      res.status(500).send({error: "Encountered database error while checking if party exists"});
+      res.status(500).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
       return;
     }
 
     //return error if party with that name already exists
     if (party.length != 0){
-      res.status(200).send({error: "A party with that name already exists!"});
+      res.status(200).send({error: "A party with that name already exists."});
       return;
     }
 
@@ -74,7 +74,7 @@ app.post('/register_party', (req, res) => {
     //save newly created party object
     newParty.save((err, newParty) => {
       if (err) {
-        res.status(500).send({error: "Encountered database error while checking if party exists"});
+        res.status(500).send({error: "Encountered a database error while checking if the party exists. Please try again at a later time."});
         return;
       }
 
@@ -105,14 +105,14 @@ app.post('/register_guest', (req, res) => {
 
   //check if both name and password fields are not empty
   if(!name || !password) {
-    res.status(400).send({error : "Must provide a json containing a partyName and partyPassword"});
+    res.status(400).send({error : "Must provide a partyName and partyPassword"});
     return;
   }
 
   //validate that there is a party with that name and password
   var result = Party.findOne({partyName: name, partyPassword: password}).exec((err, party) => {
     if (err) {
-      res.status(500).send({error: "Encountered database error while checking if party exists"});
+      res.status(500).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
       return;
     }
 
@@ -126,7 +126,7 @@ app.post('/register_guest', (req, res) => {
     party.guests.push([])
     party.save((err, result) => {
       if (err) {
-        res.status(500).send({error: "Encountered database while adding guest"});
+        res.status(500).send({error: "Encountered database error while adding guest. Please try again at a later time."});
         return;
       }
 
