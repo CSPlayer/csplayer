@@ -4,12 +4,9 @@ var Schema = mongoose.Schema;
 var partySchema = new Schema({
   partyName : {type: String, required: true},
   partyPassword: {type: String, required: true},
-  guests: [[{
-      songName: String,
-      songUrl: String,
-      vote: Number
-  }]]
-})
+  memberCount: {type: Number, required: true},
+  playlist: []
+});
 
 var Party = mongoose.model("Party", partySchema);
 module.exports = Party;

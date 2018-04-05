@@ -68,7 +68,8 @@ app.post('/register_party', (req, res) => {
     var newParty = new Party({
       partyName: name,
       partyPassword: password,
-      guests: [[]]
+      memberCount: 1,
+      playlist: []
     })
 
     //save newly created party object
@@ -123,7 +124,7 @@ app.post('/register_guest', (req, res) => {
     }
 
     //otherwise add guest data to the database
-    party.guests.push([])
+    party.memberCount++;
     party.save((err, result) => {
       if (err) {
         res.status(500).send({error: "Encountered database error while adding guest. Please try again at a later time."});
@@ -131,7 +132,7 @@ app.post('/register_guest', (req, res) => {
       }
 
       //send back json with partyName and the registered guests guestID.
-      res.status(200).send({PartName: name, guestID: result.guests.length - 1});
+      res.status(200).send({PartName: name, guestID: result.memberCount});
     })
   })
 })
