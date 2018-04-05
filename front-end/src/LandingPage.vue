@@ -32,9 +32,11 @@ export default {
           partyPassword: this.partyPassword
         });
 
+        //if the back-end had an issue, display the error
         if (response.data.error) {
           this.error = response.data.error;
         } else {
+          //otherwise go to the host page
           this.$router.push('/host/' + response.data.partyName);
         }
 
@@ -45,9 +47,11 @@ export default {
           partyPassword: this.partyPassword
         })
 
+        //if the back-end had an issue, display the error
         if (response.data.error) {
           this.error = response.data.error;
         } else {
+          //otherwise go to the host page
           this.$router.push('/guest/' + response.data.partyName + '/' + response.data.guestID);
         }
       }
