@@ -9,6 +9,9 @@
     </form>
     <button v-on:click="HostParty">Host a party</button>
     <button v-on:click="JoinParty">Join a party</button>
+    <div style="color: red;">
+      {{ error }}
+    </div>
   </div>
 </template>
 
@@ -18,25 +21,35 @@ export default {
   data () {
     return {
       partyName: '',
-      partyPassword: ''
+      partyPassword: '',
+      error: ''
     }
   },
   methods: {
       async HostParty() {
-        console.log("HostParty")
         const response = await AuthenticationService.registerParty({
           partyName: this.partyName,
           partyPassword: this.partyPassword
-        })
-        console.log(response)
+        });
+
+        if (response.data.error) {
+          this.error = response.data.error;
+        } else {
+          this.$router.push('/host/' + response.data.partyName);
+        }
+
       },
       async JoinParty() {
-        console.log("JoinParty")
         const response = await AuthenticationService.registerGuest({
           partyName: this.partyName,
           partyPassword: this.partyPassword
         })
-        console.log(response)
+
+        if (response.data.error) {
+          this.error = response.data.error;
+        } else {
+          this.$router.push('/guest/' + response.data.partyName + '/' + response.data.guestID);
+        }
       }
   }
 }

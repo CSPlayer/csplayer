@@ -23,14 +23,14 @@ const init = (app) => {
 
     //check if both name and password fields are not empty
     if(!name || !password) {
-      res.status(400).send({error : "Must provide a partyName and partyPassword."});
+      res.status(200).send({error : "Must provide a partyName and partyPassword."});
       return;
     }
 
     //look up provided party name
     var result = Party.find({partyName: name}).exec((err, party) => {
       if (err) {
-        res.status(500).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
+        res.status(200).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
         return;
       }
 
@@ -51,7 +51,7 @@ const init = (app) => {
       //save newly created party object
       newParty.save((err, newParty) => {
         if (err) {
-          res.status(500).send({error: "Encountered a database error while checking if the party exists. Please try again at a later time."});
+          res.status(200).send({error: "Encountered a database error while checking if the party exists. Please try again at a later time."});
           return;
         }
 
@@ -81,14 +81,14 @@ const init = (app) => {
 
     //check if both name and password fields are not empty
     if(!name || !password) {
-      res.status(400).send({error : "Must provide a partyName and partyPassword"});
+      res.status(200).send({error : "Must provide a partyName and partyPassword"});
       return;
     }
 
     //validate that there is a party with that name and password
     var result = Party.findOne({partyName: name, partyPassword: password}).exec((err, party) => {
       if (err) {
-        res.status(500).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
+        res.status(200).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
         return;
       }
 
@@ -102,7 +102,7 @@ const init = (app) => {
       party.memberCount++;
       party.save((err, result) => {
         if (err) {
-          res.status(500).send({error: "Encountered database error while adding guest. Please try again at a later time."});
+          res.status(200).send({error: "Encountered database error while adding guest. Please try again at a later time."});
           return;
         }
 
