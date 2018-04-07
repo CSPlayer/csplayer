@@ -1,27 +1,36 @@
 const express = require('express');
-const app = express();
-
-const server = app.listen(process.env.PORT || 8081);
-const io = require('socket.io').listen(server);
-
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 
+//connect to database
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost');
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error"));
+db.once("open", function(callback){
+  console.log("Connection Succeeded");
+});
+
+//const Party = require('../models/Party');
+
+//create backend app
+const app = express();
+const server = app.listen(process.env.PORT || 8081);
+
+//create websockets
+const io = require('socket.io').listen(server);
 const socketEventHandler = require('./socketevent-handler');
 
+//setup middleware
 // app.use(morgan('combined'))
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/register_party', (req, res) => {
-  res.send({message: 'Party was successfully registered!'})
-});
+//set up routes for registration API
+require('./registration-routes').init(app);
 
-app.post('/register_guest', (req, res) => {
-  res.send({message: 'Guest was successfully registered!'})
-});
-
+//enable socket-io
 io.on("connection", function(socket) {
   console.log("Connected");
   socketEventHandler.handle(socket);

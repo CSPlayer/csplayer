@@ -1,4 +1,4 @@
-const db = require("./fakedb");
+//const db = require("./fakedb");
 
 function handle(socket) {
 
@@ -8,15 +8,15 @@ function handle(socket) {
     socket.join(partyId);
     console.log("Joined " + partyId);
   });
-  
+
   socket.on("clientAddedItemToPlaylist", function(track) {
     masterPlaylist.push(track);
     socket.emit("serverUpdatedPlaylist", masterPlaylist);
   });
-  
+
   socket.on("clientCastedVote", function(track, vote) {
     let specificTrack = getTrackObject(track.id, masterPlaylist);
-  
+
     if (specificTrack !== null) {
       specificTrack.rating += vote;
       socket.emit("serverUpdatedPlaylist", masterPlaylist);
@@ -27,7 +27,7 @@ function handle(socket) {
     if (masterPlaylist.length > 0) {
       masterPlaylist.shift();
     }
-    
+
     socket.emit("serverUpdatedPlaylist", masterPlaylist);
   })
 }
