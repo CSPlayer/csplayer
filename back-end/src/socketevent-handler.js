@@ -1,5 +1,3 @@
-//const db = require("./fakedb");
-
 function handle(socket) {
 
   let masterPlaylist = [];
