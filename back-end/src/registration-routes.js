@@ -107,7 +107,7 @@ const init = (app) => {
         }
 
         //send back json with partyName and the registered guests guestID.
-        res.status(200).send({PartName: name, guestID: result.memberCount});
+        res.status(200).send({partyName: name, guestID: result.memberCount});
       });
     });
   });
