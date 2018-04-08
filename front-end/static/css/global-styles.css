@@ -1,17 +1,13 @@
 /* TODO: Rename this file to make it more clear */
-body {
-    margin: 0;
-    padding: 0;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .center{
     margin: auto auto;
     text-align: center;
-}
-
-.transparent-bg {
-    opacity: 0.0;
-    background-color: rgba(0, 0, 0 0.0);
 }
 
 .hide {

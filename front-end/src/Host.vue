@@ -2,14 +2,16 @@
   <div id="app">
     <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <ul id="app-playlistbody">
-      <li v-for="item in getRoomPlaylist">
-        <playlist-item v-bind:track="item"
-                       v-on:vote="castVote"
-                       :key="item.id.id">
-        </playlist-item>
-      </li>
-    </ul>
+    <div id="app-playlistbody">
+      <ul>
+        <li v-for="item in getRoomPlaylist">
+          <playlist-item v-bind:track="item"
+          v-on:vote="castVote"
+          :key="item.id.id">
+          </playlist-item>
+        </li>
+      </ul>
+    </div>
 
     <player-bar id="app-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
   </div>
@@ -114,10 +116,8 @@ export default {
 </script>
 
 <style scoped>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: skyblue;
+  #app {
+    height: 100%;
   }
 
   #app-searchbar {
@@ -125,11 +125,13 @@ export default {
     top: 0;
     width: 100%;
     height: 80px;
-    background-color: aliceblue;
+    background-color: #222222;
   }
 
   #app-playlistbody {
-    margin-top: 100px;
+    height: 100%;
+    background-color: #444444;
+    overflow: scroll;
   }
 
   ul {
@@ -141,6 +143,6 @@ export default {
     bottom: 0;
     width: 100%;
     height: 80px;
-    background-color: white;
+    background-color: #222222;
   }
 </style>

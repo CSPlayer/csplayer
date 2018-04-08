@@ -1,5 +1,5 @@
 <template>
-  <div class="center vertical-offset relative-position">
+  <div class="center vertical-offset">
     <button v-on:click="ytSearch(query)"><i class="fa fa-search big-fa" aria-hidden="true"></i></button>
     <input v-model="query" v-on:keyup.enter="ytSearch(query)" v-on:input="debouncedSearch(query)" type="search">
     <ul id="search-results">
@@ -108,9 +108,10 @@
 
 <style scoped>
   input {
-    font-size: 32px;
+    font-size: 2em;
+    color: #e3e3e3;
     border-width: 0px 0px 2px 0px;
-    border-color: darkslategray;
+    border-color: #e3e3e3;
     background-color: rgba(255, 255, 255, 0);
     margin-left: 5px;
   }
