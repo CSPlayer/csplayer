@@ -117,12 +117,12 @@ export default {
 
   #circle-inner {
     z-index: 5;
-    /* animation: spin-clockwise 60s linear infinite; */
+    animation: spin-clockwise 60s linear infinite;
   }
 
   #circle-outer {
     z-index: 6;
-    /* animation: spin-counterclockwise 70s linear infinite; */
+    animation: spin-counterclockwise 70s linear infinite;
   }
 
   @keyframes spin-clockwise {
