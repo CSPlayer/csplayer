@@ -107,10 +107,50 @@ const init = (app) => {
         }
 
         //send back json with partyName and the registered guests guestID.
-        res.status(200).send({PartName: name, guestID: result.memberCount});
+        res.status(200).send({partyName: name, guestID: result.memberCount});
       });
     });
   });
+
+
+
+  /**
+   * @summary Deletes a party with the provided username and password.
+   * @description
+   * Accepts post requests on the /unregister_party route. Expects a json with the
+     following data:
+     {
+        partyName: string,
+        partyPassword: string
+     }
+     On success it will send back the party name. Otherwise it will send a json
+     with an error message in it. ex: { error: string }
+   * @listens Server#unregister_party_route
+   * @emits JSON
+   */
+  app.post('/unregister_party', (req, res) => {
+    const name = req.body.partyName;
+    const password = req.body.partyPassword;
+
+    //check if both name and password fields are not empty
+    if(!name || !password) {
+      res.status(200).send({error : "Must provide a partyName and partyPassword."});
+      return;
+    }
+
+    //look up provided party name
+    Party.remove({partyName: name, partyPassword: password}, (err, party) => {
+        if (err) {
+          res.status(200).send({error: "Encountered database error while checking if party exists. Please try again at a later time."});
+          return;
+        } else {
+          //send back party name to indicate success
+          res.status(200).send({partyName: name});
+        }
+      });
+  });
+
+
 }
 
 module.exports = {init: init};
