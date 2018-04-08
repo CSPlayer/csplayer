@@ -121,14 +121,16 @@ export default {
   }
 
   #app-searchbar {
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 100%;
     height: 80px;
     background-color: #222222;
+    box-shadow: 0 2px 1px 1px #111;
   }
 
   #app-playlistbody {
+    padding-top: 80px;
     height: 100%;
     background-color: #444444;
     overflow: scroll;
@@ -139,7 +141,7 @@ export default {
   }
 
   #app-playerbar {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     width: 100%;
     height: 80px;
