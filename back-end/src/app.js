@@ -32,6 +32,6 @@ require('./registration-routes').init(app);
 
 //enable socket-io
 io.on("connection", function(socket) {
-  console.log("Connected");
+  console.log(socket.id + " Connected");
   socketEventHandler.handle(socket);
 });
