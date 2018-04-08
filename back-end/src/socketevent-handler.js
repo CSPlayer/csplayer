@@ -60,12 +60,37 @@ function distributePlaylist(socket, partyName) {
     if (err) {
       //do some error handling
     } else {
-      //emit playlist to original client
-      socket.emit("serverUpdatedPlaylist", party.playlist);
-      //emit playlist to everyone else in the room
-      socket.to(partyName).emit("serverUpdatedPlaylist", party.playlist);
+
+      //sort playlist
+      let playlist = sortPlaylist(party.playlist, party.memberCount);
+
+      //store updated playlist in db
+      Party.update({partyName: partyName}, {$set: {playlist: playlist}}).exec((err, result) => {
+        if (err) {
+          //do some error handling
+        } else {
+          //emit playlist back to original client
+          socket.emit("serverUpdatedPlaylist", playlist);
+          //emit playlist to everyone else in the room
+          socket.to(partyName).emit("serverUpdatedPlaylist", playlist);
+        }
+      });
     }
   });
 }
+
+//removes all songs disliked by more than half of the guests
+//sorts songs with highest prority to the top
+function sortPlaylist(playlist, memberCount) {
+  return playlist.filter((track) => {
+    if(track.rating <= Math.floor(memberCount*-1*.5)) {
+      return false;
+    }
+    return true;
+  }).sort((track1, track2) => {
+    return track2.rating - track1.rating;
+  });
+}
+
 
 module.exports.handle = handle;
