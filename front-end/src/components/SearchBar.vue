@@ -130,11 +130,15 @@
     cursor: pointer;
   }
 
-  /* TODO: Find out how to attach this to the bottom of the input line */
   ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
   }
 
   li {

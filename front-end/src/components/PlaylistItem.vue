@@ -1,22 +1,25 @@
 <template>
-  <div id="playlist-item">
+  <div id="playlist-item" class="ui equal width grid">
 
-    <div>
+    <div class="column center">
       <h1 id="title">{{track.videoItem.snippet.title}}</h1>
     </div>
 
-    <div>
+
+    <div id="vote-container" class="column center">
       <div id="vote-buttons" class="big-fa">
         <button v-show="!isTrackDownvoted" v-bind:class="{ 'upvote-color': isTrackUpvoted }"  v-on:click="upvote">
-          <i class="far fa-arrow-alt-circle-up"></i>
+          <i class="fas fa-arrow-alt-circle-up"></i>
         </button>
 
         <button v-show="!isTrackUpvoted" v-bind:class="{ 'downvote-color': isTrackDownvoted }" v-on:click="downvote">
-          <i class="far fa-arrow-alt-circle-down" ></i>
+          <i class="fas fa-arrow-alt-circle-down" ></i>
         </button>
       </div>
-      
-      <h3 id="rating">{{track.rating}}</h3>
+
+      <div>
+        <h3 id="rating">{{track.rating}}</h3>
+      </div>
     </div>
 
   </div>
@@ -70,14 +73,18 @@
     color: #e3e3e3;
     border: 1px solid #444444;
     background-color: #222222;
-    /* max-width: 768px; */
-    text-align: center;
-    margin: auto;
-    padding: 20px;
+    padding: 15px;
+    width: 100%;
   }
 
-  #playlist-item * {
-    display: inline-block;
+  h1 {
+    margin-left: 10px;
+  }
+
+  #vote-container {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: nowrap;
   }
 
   button {
@@ -85,14 +92,21 @@
     color: #e3e3e3;
     font-size: 1.5em;
     background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
   }
 
   .upvote-color {
-    color: orange;
+    color: green;
   }
 
   .downvote-color {
-    color: blue;
+    color: red;
+  }
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.5em;
+    }
   }
 
 </style>
