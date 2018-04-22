@@ -15,8 +15,8 @@
         <label for="partyPassword">Party Password</label> <br>
         <input name="partyPassword" type="password" v-model="partyPassword">
         <br>
-        <button v-on:click="HostParty">Host a party</button>
-        <button v-on:click="JoinParty">Join a party</button>
+        <button v-on:click="hostParty">Host a party</button>
+        <button v-on:click="joinParty">Join a party</button>
       </form>
       <div style="color: red;">
         {{ error }}
@@ -36,7 +36,7 @@ export default {
     }
   },
   methods: {
-      async HostParty() {
+      async hostParty() {
         const response = await AuthenticationService.registerParty({
           partyName: this.partyName,
           partyPassword: this.partyPassword
@@ -51,7 +51,7 @@ export default {
         }
 
       },
-      async JoinParty() {
+      async joinParty() {
         const response = await AuthenticationService.registerGuest({
           partyName: this.partyName,
           partyPassword: this.partyPassword
