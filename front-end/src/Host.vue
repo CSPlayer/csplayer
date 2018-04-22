@@ -1,5 +1,5 @@
 <template>
-  <div id="host" class="flex">
+  <div id="host">
     <search-bar id="host-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
     <div id="host-playlistbody">
@@ -132,7 +132,6 @@ export default {
   }
 
   #host-playlistbody {
-    padding-top: 80px;
     height: calc(100% - 160px);
     background-color: #444444;
     overflow: auto;

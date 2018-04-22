@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <h1> Guest page </h1>
-    <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
+    <search-bar id="guest-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <ul id="app-playlistbody">
+    <ul id="guest-playlistbody">
       <li v-for="item in getRoomPlaylist">
         <playlist-item v-bind:track="item"
                        v-on:vote="castVote"
@@ -17,7 +16,6 @@
 <script>
 import SearchBar from "./components/SearchBar"
 import PlaylistItem from "./components/PlaylistItem"
-import PlayerBar from "./components/PlayerBar"
 
 import io from "socket.io-client"
 
@@ -36,7 +34,6 @@ export default {
   components: {
     SearchBar,
     PlaylistItem,
-    PlayerBar
   },
 
   methods: {
@@ -97,39 +94,34 @@ export default {
   created: function() {
     this.socket = io(backendURL);
 
-    let host = this;
+    let guest = this;
 
     this.socket.on("connect", function() {
-      let partyId = host.$route.params.partyId;
-      host.socket.emit("room", partyId);
+      let partyId = guest.$route.params.partyId;
+      guest.socket.emit("room", partyId);
     });
 
     this.socket.on("serverUpdatedPlaylist", function(updatedPlaylist) {
       console.log("Received new playlist");
       console.log(updatedPlaylist);
-      host.roomPlaylist = updatedPlaylist;
+      guest.roomPlaylist = updatedPlaylist;
     });
   }
 }
 </script>
 
 <style scoped>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: skyblue;
-  }
-
-  #app-searchbar {
-    position: fixed;
-    top: 0;
+  #guest-searchbar {
     width: 100%;
     height: 80px;
-    background-color: aliceblue;
+    background-color: #222222;
+    margin: 0;
   }
 
-  #app-playlistbody {
-    margin-top: 0px;
+  #guest-playlistbody {
+    height: calc(100% - 80px);
+    background-color: #444444;
+    margin: 0;
   }
 
   ul {
