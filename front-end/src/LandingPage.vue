@@ -15,8 +15,8 @@
         <label for="partyPassword">Party Password</label> <br>
         <input name="partyPassword" type="password" v-model="partyPassword">
         <br>
-        <button v-on:click="hostParty">Host a party</button>
-        <button v-on:click="joinParty">Join a party</button>
+        <button type="button" v-on:click="hostParty">Host a party</button>
+        <button type="button" v-on:click="joinParty">Join a party</button>
       </form>
       <div style="color: red;">
         {{ error }}
@@ -105,7 +105,7 @@ export default {
     margin: 20px;
   }
 
-  /** 
+  /**
    * All of this below is just to get goddamn spinning circles
    */
   #circle-inner {
@@ -149,7 +149,7 @@ export default {
       font-size: 5em;
       margin: 0 auto 40px;
     }
-    
+
     #circle-inner, #circle-outer {
       display: none !important;
     }
