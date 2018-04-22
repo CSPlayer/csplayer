@@ -5,9 +5,10 @@
     <div id="host-playlistbody">
       <ul>
         <li v-for="item in getRoomPlaylist">
-          <playlist-item v-bind:track="item"
-          v-on:vote="castVote"
-          :key="item.id.id">
+          <playlist-item
+            v-bind:track="item"
+            v-on:vote="castVote"
+            :key="item.id.id">
           </playlist-item>
         </li>
       </ul>
@@ -135,10 +136,15 @@ export default {
     height: calc(100% - 160px);
     background-color: #444444;
     overflow: auto;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
   }
 
   ul {
     list-style-type: none;
+    padding: 0;
   }
 
   #host-playerbar {

@@ -1,27 +1,30 @@
 <template>
-  <div id="app">
+  <div id="guest">
     <search-bar id="guest-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <ul id="guest-playlistbody">
-      <li v-for="item in getRoomPlaylist">
-        <playlist-item v-bind:track="item"
-                       v-on:vote="castVote"
-                       :key="item.id.id">
-        </playlist-item>
-      </li>
-    </ul>
+    <div id="guest-playlistbody">
+      <ul>
+        <li v-for="item in getRoomPlaylist">
+          <playlist-item
+            v-bind:track="item"
+            v-on:vote="castVote"
+            :key="item.id.id">
+          </playlist-item>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchBar from "./components/SearchBar"
-import PlaylistItem from "./components/PlaylistItem"
+  import SearchBar from "./components/SearchBar"
+  import PlaylistItem from "./components/PlaylistItem"
 
-import io from "socket.io-client"
+  import io from "socket.io-client"
 
-const backendURL = "http://localhost:8081";
+  const backendURL = "http://localhost:8081";
 
-export default {
+  export default {
   name: "Guest",
 
   data () {
@@ -111,20 +114,34 @@ export default {
 </script>
 
 <style scoped>
+  #guest {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
   #guest-searchbar {
+    position: absolute;
+    top: 0;
     width: 100%;
     height: 80px;
     background-color: #222222;
-    margin: 0;
+    box-shadow: 0 2px 1px 1px #111;
   }
 
   #guest-playlistbody {
-    height: calc(100% - 80px);
+    height: calc(100% - 160px);
     background-color: #444444;
-    margin: 0;
+    overflow: auto;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
   }
 
   ul {
     list-style-type: none;
+    padding: 0;
   }
 </style>
