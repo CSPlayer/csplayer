@@ -72,7 +72,7 @@ export default {
 <style scoped>
   #landing-page {
     height: 100%;
-    color: #e3e3e3;
+    color: #E3E3E3;
   }
 
   .form-container {
@@ -94,8 +94,8 @@ export default {
     text-align: center;
     background-color: rgba(22, 22, 22, 0.0);
     border-width: 0 0 1px 0;
-    border-color: #e3e3e3;
-    color: #e3e3e3;
+    border-color: #E3E3E3;
+    color: #E3E3E3;
   }
 
   button {
@@ -148,7 +148,6 @@ export default {
       text-align: center;
       font-size: 5em;
       margin: 0 auto 40px;
-      /* margin: 50px; */
     }
     
     #circle-inner, #circle-outer {
