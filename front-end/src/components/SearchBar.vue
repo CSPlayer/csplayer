@@ -55,6 +55,9 @@
             }
           )
         }
+        else {
+          this.results = [];
+        }
       },
 
       /**
@@ -155,6 +158,5 @@
     input {
       width: 90%;
     }
-
   }
 </style>
