@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
+  <div id="host" class="flex">
+    <search-bar id="host-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <div id="app-playlistbody">
+    <div id="host-playlistbody">
       <ul>
         <li v-for="item in getRoomPlaylist">
           <playlist-item v-bind:track="item"
@@ -13,7 +13,7 @@
       </ul>
     </div>
 
-    <player-bar id="app-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
+    <player-bar id="host-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
   </div>
 </template>
 
@@ -108,7 +108,6 @@ export default {
     });
     
     this.socket.on("serverUpdatedPlaylist", function(updatedPlaylist) {
-      console.log("Received new playlist");
       host.roomPlaylist = updatedPlaylist;
     });
   }
@@ -116,11 +115,14 @@ export default {
 </script>
 
 <style scoped>
-  #app {
+  #host {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
 
-  #app-searchbar {
+  #host-searchbar {
     position: absolute;
     top: 0;
     width: 100%;
@@ -129,18 +131,18 @@ export default {
     box-shadow: 0 2px 1px 1px #111;
   }
 
-  #app-playlistbody {
+  #host-playlistbody {
     padding-top: 80px;
-    height: 100%;
+    height: calc(100% - 160px);
     background-color: #444444;
-    overflow: scroll;
+    overflow: auto;
   }
 
   ul {
     list-style-type: none;
   }
 
-  #app-playerbar {
+  #host-playerbar {
     position: absolute;
     bottom: 0;
     width: 100%;
