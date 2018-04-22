@@ -1,17 +1,14 @@
-/* TODO: Rename this file to make it more clear */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-.center{
-    margin: auto auto;
-    text-align: center;
-}
-
-.hide {
-    display: none;
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
 }
 
 .big-fa {
@@ -20,8 +17,4 @@ body, html {
 
 .vertical-offset {
   padding-top: 20px;
-}
-
-.relative-position {
-  position: relative;
 }
