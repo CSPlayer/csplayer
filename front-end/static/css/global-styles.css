@@ -9,12 +9,9 @@ body, html {
   align-items: center;
   justify-content: center;
   margin: auto;
+  flex-wrap: wrap;
 }
 
 .big-fa {
-    font-size: 24px;
-}
-
-.vertical-offset {
-  padding-top: 20px;
+  font-size: 24px;
 }
