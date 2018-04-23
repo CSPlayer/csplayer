@@ -1,17 +1,20 @@
 <template>
-  <div id="app">
-    <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
+  <div id="host">
+    <search-bar id="host-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <ul id="app-playlistbody">
-      <li v-for="item in getRoomPlaylist">
-        <playlist-item v-bind:track="item"
-                       v-on:vote="castVote"
-                       :key="item.id.id">
-        </playlist-item>
-      </li>
-    </ul>
+    <div id="host-playlistbody">
+      <ul>
+        <li v-for="item in getRoomPlaylist">
+          <playlist-item
+            v-bind:track="item"
+            v-on:vote="castVote"
+            :key="item.id.id">
+          </playlist-item>
+        </li>
+      </ul>
+    </div>
 
-    <player-bar id="app-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
+    <player-bar id="host-playerbar" v-bind:track="getCurrentTrack" v-on:songEnd="cueNextTrack"></player-bar>
   </div>
 </template>
 
@@ -106,7 +109,6 @@ export default {
     });
     
     this.socket.on("serverUpdatedPlaylist", function(updatedPlaylist) {
-      console.log("Received new playlist");
       host.roomPlaylist = updatedPlaylist;
     });
   }
@@ -114,33 +116,42 @@ export default {
 </script>
 
 <style scoped>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: skyblue;
+  #host {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
 
-  #app-searchbar {
-    position: fixed;
+  #host-searchbar {
+    position: absolute;
     top: 0;
     width: 100%;
     height: 80px;
-    background-color: aliceblue;
+    background-color: #222222;
+    box-shadow: 0 2px 1px 1px #111;
   }
 
-  #app-playlistbody {
-    margin-top: 100px;
+  #host-playlistbody {
+    height: calc(100% - 160px);
+    background-color: #444444;
+    overflow: auto;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
   }
 
   ul {
     list-style-type: none;
+    padding: 0;
   }
 
-  #app-playerbar {
-    position: fixed;
+  #host-playerbar {
+    position: absolute;
     bottom: 0;
     width: 100%;
     height: 80px;
-    background-color: white;
+    background-color: #222222;
   }
 </style>

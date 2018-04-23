@@ -1,15 +1,16 @@
 <template>
-  <div class="center vertical-offset">
+  <div id="player-bar">
     <hr id="progress-bar">
     <div id="yt-player"></div>
 
-    <div v-show="isCurrentlyPlaying">
-      <button v-on:click="pauseVideo"><i class="fas fa-pause big-fa" aria-hidden="true"></i></button>
+    <div class="center">
+      <div v-show="isCurrentlyPlaying">
+        <button v-on:click="pauseVideo"><i class="fas fa-pause big-fa" aria-hidden="true"></i></button>
+      </div>
+      <div v-show="!isCurrentlyPlaying">
+        <button v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
+      </div>
     </div>
-    <div v-show="!isCurrentlyPlaying">
-      <button v-on:click="playVideo"><i class="fas fa-play big-fa" aria-hidden="true"></i></button>
-    </div>
-
   </div>
 </template>
 
@@ -66,7 +67,7 @@
           // If oldTrack is undefined, then this is the first track to be added and we should
           // only play when the user wants to start
           if (oldTrack === undefined) {
-          this.player.ytPlayer.cueVideoById(currentTrack.videoItem.id.videoId, 0, "small");
+            this.player.ytPlayer.cueVideoById(currentTrack.videoItem.id.videoId, 0, "small");
           }
           // Normally the computed method of Host#getCurrentTrack would only update the track when
           // it has finished or skipped, but because the server sends a new array of songs the computed
@@ -125,7 +126,11 @@
 
 <style scoped>
   #progress-bar {
-    margin-top: -20px;
-    border: 2px solid red;
+    margin: 0;
+    border: 2px solid #2647ff;
+  }
+
+  button {
+    margin: 10px;
   }
 </style>

@@ -1,16 +1,21 @@
 <template>
-  <div class="center vertical-offset relative-position">
-    <button v-on:click="ytSearch(query)"><i class="fa fa-search big-fa" aria-hidden="true"></i></button>
-    <input v-model="query" v-on:keyup.enter="ytSearch(query)" v-on:input="debouncedSearch(query)" type="search">
-    <ul id="search-results">
-      <li
-        v-for="(title, index) in getVideoTitles"
-        v-on:click="addToPlaylist(index)">
-        <!-- <i class="fab fa-spotify spotify-green"></i> -->
-        <i class="fab fa-youtube youtube-red"></i>
-         {{ title }}
-      </li>
-    </ul>
+  <div id="search-bar" class="center">
+
+    <div class="center">
+      <button v-on:click="ytSearch(query)"><i class="fa fa-search big-fa" aria-hidden="true"></i></button>
+      <input v-model="query" v-on:keyup.enter="ytSearch(query)" v-on:input="debouncedSearch(query)" type="search">
+    </div>
+
+    <div>
+      <ul>
+        <li
+          v-for="(title, index) in getVideoTitles"
+          v-on:click="addToPlaylist(index)">
+          <i class="fab fa-youtube youtube-red"></i>
+          {{ title }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -37,17 +42,22 @@
       * @param {string} query - Query entered by user
       */
       ytSearch: function(query) {
-        this.results = [];
-        let searchBar = this;
-        $.get(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=AIzaSyD-pVsu7hyh4_vhSB5SearFS5BqZJr3kM0`,
-          function(data) {
-            console.log(data);
-            data.items.forEach(function(item) {
-              searchBar.results.push(item);
-            });
-          }
-        )
+        if (query !== "") {
+          this.results = [];
+          let searchBar = this;
+          $.get(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=AIzaSyD-pVsu7hyh4_vhSB5SearFS5BqZJr3kM0`,
+            function(data) {
+              console.log(data);
+              data.items.forEach(function(item) {
+                searchBar.results.push(item);
+              });
+            }
+          )
+        }
+        else {
+          this.results = [];
+        }
       },
 
       /**
@@ -108,11 +118,12 @@
 
 <style scoped>
   input {
-    font-size: 32px;
-    border-width: 0px 0px 2px 0px;
-    border-color: darkslategray;
-    background-color: rgba(255, 255, 255, 0);
+    font-size: 2em;
+    color: #E3E3E3;
+    border-width: 0px 0px 1px 0px;
+    border-color: #E3E3E3;
     margin-left: 5px;
+    background-color: rgba(255, 255, 255, 0.0);
   }
 
   button {
@@ -120,35 +131,36 @@
   }
 
   ul {
-    position: absolute;
-    left: 0;
     margin: 0;
     padding: 0;
     list-style-type: none;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
   }
 
-/* TODO: Align the search results and clean CSS */
-  #search-results {
-    position: absolute;
-    left: 35%;
-    text-align: left;
-    font-size: 18px;
+  li {
+    background-color: #E3E3E3;
+    padding: 15px;
+    border: 1px solid #222222;
+    cursor: pointer;
+    width: 100%;
+    overflow: hidden;
   }
 
-    #search-results > li {
-      background-color: whitesmoke;
-      padding: 15px;
-      border: 1px solid grey;
-      cursor: pointer;
-      width: 100%;
-      overflow: hidden;
+  .youtube-red {
+    color: #FF0000;
+  }
+
+  @media screen and (max-width: 768px) {
+    button {
+      display: none;
     }
 
-    .youtube-red {
-      color: #FF0000;
+    input {
+      width: 90%;
     }
-
-    .spotify-green {
-      color: #1db954;
-    }
+  }
 </style>

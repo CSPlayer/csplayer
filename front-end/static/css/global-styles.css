@@ -1,31 +1,21 @@
-/* TODO: Rename this file to make it more clear */
-body {
-    margin: 0;
-    padding: 0;
+* {
+  box-sizing: border-box;
 }
 
-.center{
-    margin: auto auto;
-    text-align: center;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.transparent-bg {
-    opacity: 0.0;
-    background-color: rgba(0, 0, 0 0.0);
-}
-
-.hide {
-    display: none;
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  flex-wrap: wrap;
 }
 
 .big-fa {
-    font-size: 24px;
-}
-
-.vertical-offset {
-  padding-top: 20px;
-}
-
-.relative-position {
-  position: relative;
+  font-size: 1.5em;
 }

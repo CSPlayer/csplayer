@@ -1,29 +1,30 @@
 <template>
-  <div id="app">
-    <h1> Guest page </h1>
-    <search-bar id="app-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
+  <div id="guest">
+    <search-bar id="guest-searchbar" v-on:newPlaylistItem="addItemToPlaylist"></search-bar>
 
-    <ul id="app-playlistbody">
-      <li v-for="item in getRoomPlaylist">
-        <playlist-item v-bind:track="item"
-                       v-on:vote="castVote"
-                       :key="item.id.id">
-        </playlist-item>
-      </li>
-    </ul>
+    <div id="guest-playlistbody">
+      <ul>
+        <li v-for="item in getRoomPlaylist">
+          <playlist-item
+            v-bind:track="item"
+            v-on:vote="castVote"
+            :key="item.id.id">
+          </playlist-item>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchBar from "./components/SearchBar"
-import PlaylistItem from "./components/PlaylistItem"
-import PlayerBar from "./components/PlayerBar"
+  import SearchBar from "./components/SearchBar"
+  import PlaylistItem from "./components/PlaylistItem"
 
-import io from "socket.io-client"
+  import io from "socket.io-client"
 
-const backendURL = "http://localhost:8081";
+  const backendURL = "http://localhost:8081";
 
-export default {
+  export default {
   name: "Guest",
 
   data () {
@@ -36,7 +37,6 @@ export default {
   components: {
     SearchBar,
     PlaylistItem,
-    PlayerBar
   },
 
   methods: {
@@ -97,42 +97,51 @@ export default {
   created: function() {
     this.socket = io(backendURL);
 
-    let host = this;
+    let guest = this;
 
     this.socket.on("connect", function() {
-      let partyId = host.$route.params.partyId;
-      host.socket.emit("room", partyId);
+      let partyId = guest.$route.params.partyId;
+      guest.socket.emit("room", partyId);
     });
 
     this.socket.on("serverUpdatedPlaylist", function(updatedPlaylist) {
       console.log("Received new playlist");
       console.log(updatedPlaylist);
-      host.roomPlaylist = updatedPlaylist;
+      guest.roomPlaylist = updatedPlaylist;
     });
   }
 }
 </script>
 
 <style scoped>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: skyblue;
+  #guest {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
 
-  #app-searchbar {
-    position: fixed;
+  #guest-searchbar {
+    position: absolute;
     top: 0;
     width: 100%;
     height: 80px;
-    background-color: aliceblue;
+    background-color: #222222;
+    box-shadow: 0 2px 1px 1px #111;
   }
 
-  #app-playlistbody {
-    margin-top: 0px;
+  #guest-playlistbody {
+    height: calc(100% - 160px);
+    background-color: #444444;
+    overflow: auto;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
   }
 
   ul {
     list-style-type: none;
+    padding: 0;
   }
 </style>
